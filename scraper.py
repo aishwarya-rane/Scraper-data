@@ -1,28 +1,36 @@
-#libraries
-pip install praw
-or
-conda install -c conda-forge praw
-
+#imported libraries
 import praw
 import pandas as pd
 
 reddit = praw.Reddit(client_id='BCIjRj-ycxyYKw', client_secret='H4Y2kZK8ApPhID51VX6R83dHR4M', user_agent='Reddit Webscraper Bit')
 
 posts = []
+
+#gets top 10 posts from Bitcoin subreddit
 bitcoin_subreddit = reddit.subreddit('Bitcoin')
 for post in bitcoin_subreddit.hot(limit=10):
     posts.append([post.title, post.score, post.id, post.subreddit, post.url, post.num_comments, post.selftext, post.created])
 posts = pd.DataFrame(posts,columns=['title', 'score', 'id', 'subreddit', 'url', 'num_comments', 'body', 'created'])
-#print(posts))
 
-# get Bitcoin subreddit data
+# get Bitcoin subreddit description
 bitcoin_subreddit = reddit.subreddit('Bitcoin')
-#print(bitcoin_subreddit.description)
+description = bitcoin_subreddit.description
+
+#gathers comments for each post into individual csv's
+submissions = []
+id_list = posts["id"]
+for post_id in id_list:
+  submissions.append(reddit.submission(id= post_id))
+
+def all_comments(submission):
+  post_commments = []
+  submission.comments.replace_more(limit=0)
+  for comment in submission.comments.list():
+      post_commments.append(comment.body)
+  post_commments = pd.DataFrame(post_commments, columns = ["comments"])
+  return post_commments
 
 
-# individual post
-submission = reddit.submission(id="a3p0uq")
-
-submission.comments.replace_more(limit=0)
-for top_level_comment in submission.comments:
-    print(top_level_comment.body)
+for submission in submissions:
+  sheet = all_comments(submission)
+  sheet.to_csv("subreddit_post_commments.csv")
