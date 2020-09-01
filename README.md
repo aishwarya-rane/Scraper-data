@@ -1,3 +1,5 @@
-# Reddit-Analysis
+# Scraper-data
 
-Sentiment Analysis on Sub-reddits related to Bitcoin / Cryptocurrency
+Reddit Scraper
+
+Twitter Scraper 
