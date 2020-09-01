@@ -31,10 +31,10 @@ def collectSubData(subm):
     subStats[sub_id] = subData
 
 #Subreddit to query
-sub='PS4'
+sub='Bitcoin'
 #before and after dates
-before = "1538352000" #October 1st
-after = "1514764800"  #January 1st
+before = "1590969600" #July 1st
+after = "1596240000"  #January 1st
 query = "Screenshot"
 subCount = 0
 subStats = {}
